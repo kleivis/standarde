@@ -1,0 +1,46 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui">
+    <h:head>
+        <meta http-equiv="X-UA-Compatible" content="IE=Edge"/>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0"/>
+        <meta name="apple-mobile-web-app-capable" content="yes"/>
+        <title>Tasks Management</title>
+        <link rel="shortcut icon"  href="resources/images/favicon.ico" />
+    </h:head>
+    <h:body>
+        <h:form>
+            <div class="ui-g ui-fluid">
+                <p:growl id="growl" showDetail="true" sticky="true" />
+                <p:panel header="Identifikohu" footer="Aplikacioni i Standardeve" style="margin: 0 auto; margin-top: 150px; max-width: 400px; box-shadow: 5px">
+
+                    <p:graphicImage value="resources/images/asp.png" height="90px" style="display: block; margin: 0 auto"/>
+
+                    <div class="ui-g-12 ui-md-12">
+                        <div class="ui-inputgroup">
+                            <span class="ui-inputgroup-addon"><i class="pi pi-user"></i></span>
+                            <p:inputText placeholder="Username" value="#{loginBean.username}" required="true" requiredMessage="Shkruani username"/>      
+                        </div>
+                    </div>
+
+                    <div class="ui-g-12 ui-md-12">
+                        <div class="ui-inputgroup">
+                            <span class="ui-inputgroup-addon"><i class="pi pi-key"></i></span>
+                            <p:password placeholder="Password" value="#{loginBean.password}" required="true" requiredMessage="Shkruani password"/>      
+                        </div>
+                    </div>     
+
+                    <p:commandButton value="Hyr" action="#{loginBean.loginLdap()}" ajax="false" update="@form" icon="pi pi-sign-in"/>
+
+                </p:panel>
+
+            </div>
+        </h:form>
+    </h:body>
+</html>
+
+
+

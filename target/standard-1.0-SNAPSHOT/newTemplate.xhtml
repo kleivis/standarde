@@ -1,0 +1,94 @@
+<?xml version='1.0' encoding='UTF-8' ?> 
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <h:head>
+        <meta http-equiv="X-UA-Compatible" content="IE=Edge"/>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0"/>
+        <meta name="apple-mobile-web-app-capable" content="yes"/>
+        <title>Aplikacioni i Standardeve</title>
+        <link rel="shortcut icon"  href="resources/images/favicon.ico" />
+
+        <h:outputStylesheet name="cssLayout.css" library="css"/>
+
+        <script type="text/javascript">
+            PrimeFaces.locales['al'] = {
+                closeText: 'Afër',
+                prevText: 'Prapa',
+                nextText: 'Tjetra',
+                monthNames: ['Janar', 'Shkurt', 'Mars', 'Prill', 'Maj', 'Qershor', 'Korrik', 'Gusht', 'Shtator', 'Tetor', 'Nëntor', 'Dhjetor'],
+                monthNamesShort: ['Jan', 'Shk', 'Mar', 'Pri', 'Maj', 'Qer', 'Kor', 'Gus', 'Sht', 'Tet', 'Nën', 'Dhj'],
+                dayNames: ['E Djelë', 'E Hënë', 'E Martë', 'E Mërkurë', 'E Enjte', 'E Premte', 'E Shtunë'],
+                dayNamesShort: ['Dje', 'Hën', 'Mar', 'Mër', 'Enj', 'Pre', 'Sht'],
+                dayNamesMin: ['D', 'H', 'M', 'M ', 'E', 'P ', 'S'],
+                weekHeader: 'Javë',
+                FirstDay: 1,
+                isRTL: false,
+                showMonthAfterYear: false,
+                yearSuffix: '',
+                timeOnlyTitle: 'Vetëm kohë',
+                timeText: 'Kohë',
+                hourText: 'Orë',
+                minuteText: 'Minuta',
+                secondText: 'Sekonda',
+                currentText: 'Data aktuale',
+                ampm: false,
+                month: 'Muaj',
+                week: 'Java',
+                day: 'Dita',
+                allDayText: 'Gjithë ditën'
+            };
+        </script>
+
+    </h:head>
+
+    <h:body>
+
+        <p:ajaxStatus onstart="PF('statusDialog').show()" onsuccess="PF('statusDialog').hide()" />
+        <p:dialog modal="true" widgetVar="statusDialog" showHeader="false" position="top"  style="margin-top: 200px"
+                  draggable="false" closable="false" resizable="false">
+
+            <p:graphicImage name="images/ajax-loader.gif"/>
+
+        </p:dialog>
+
+        <div class="ui-fluid">
+            <p:layout fullPage="true">
+                <p:layoutUnit size="55" position="north" id="header">
+                    <p:toolbar>
+                        <f:facet name="left">
+                            <p:outputLabel value="Aplikacioni i standardeve"/>
+                        </f:facet>
+                    </p:toolbar>
+                </p:layoutUnit>
+                <p:layoutUnit position="south" footer="Drejtoria e Teknologjisë së Informacionit &#169; 2020" id="footer" > 
+                </p:layoutUnit>
+                <p:layoutUnit position="west" size="210" id="menu" resizable="true">
+                    <h:form>  
+                        <p:menu>
+                            <p:submenu>
+                                <p:menuitem value="Kryefaqe" url="case.xhtml" icon="pi pi-th-large" 
+                                            rendered="#{caseJSFManagedBean.user.role==0}" disabled="#{!accessBean.hasAccess(0)}"/>                              
+                                <p:menuitem value="Raporte" url="raport.xhtml" icon="pi pi-chart-bar" 
+                                            rendered="#{caseJSFManagedBean.user.role==1}" disabled="#{!accessBean.hasAccess(1)}"/>
+                                <p:menuitem value="Largohu" action="#{loginBean.logout}" icon="pi pi-sign-out"/>
+                            </p:submenu>                            
+                        </p:menu>
+                    </h:form>
+                </p:layoutUnit>
+                <p:layoutUnit id="content" position="center">                
+                    <ui:insert name="content">
+                        Content                        
+                    </ui:insert>         
+                </p:layoutUnit>
+            </p:layout>
+        </div>
+
+    </h:body>
+
+</html>

@@ -1,0 +1,266 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                template="./newTemplate.xhtml"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <ui:define name="content">
+        <h:form id="caseForm" rendered="#{accessBean.hasAccess(0)}">
+            <p:growl id="growl" showDetail="true" sticky="true" />  
+            <div class="ui-fluid">
+                <p:panel header="Krijo Çështje">
+                    <p:panelGrid columns="2" columnClasses="ui-g-12 ui-md-6,ui-g-12 ui-md-6" layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+                        <p:panelGrid columns="2" columnClasses="ui-g-12 ui-md-4,ui-g-12 ui-md-8" layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+                            <p:outputLabel for="nrC" value="Numri i Hetimit" style="float:right"/>
+                            <p:inputText id="nrC" value="#{caseJSFManagedBean.c.caseNumber}" required="true"/>
+
+                            <p:outputLabel for="dtC" value="Data e Hetimit" style="float:right"/>
+                            <p:datePicker id="dtC" value="#{caseJSFManagedBean.c.dateCreated}" locale="al" required="true" requiredMessage="Zgjidhni Afatin" yearNavigator="true" pattern="dd-MM-yyyy"/>
+
+                            <p:outputLabel for="persh" value="Përshkrimi" style="float:right"/>
+                            <p:inputTextarea id="persh" value="#{caseJSFManagedBean.c.description}" counter="display" maxlength="500" 
+                                             counterTemplate="{0} karaktere të mbetur." required="true" requiredMessage="Përshkrimi"/>
+                            <br />
+                            <h:outputText id="display" />
+
+                            <p:outputLabel for="neni" value="Neni" style="float:right"/>
+                            <p:inputTextarea id="neni" value="#{caseJSFManagedBean.c.article}" counter="di" maxlength="200" 
+                                             counterTemplate="{0} karaktere të mbetur." required="true" requiredMessage="Neni"/>
+                            <br />
+                            <h:outputText id="di" />
+
+                            <p:outputLabel for="mas" value="Masa e disiplinore e rekomanduar nga Dr. e Standardeve" style="float:right"/>
+                            <p:inputTextarea id="mas" value="#{caseJSFManagedBean.c.measure}" counter="displa" maxlength="500" 
+                                             counterTemplate="{0} karaktere të mbetur." required="true" requiredMessage="Masa disiplinore"/>
+                            <br />
+                            <h:outputText id="displa" />
+
+                            <p:outputLabel for="dtM" value="Data e Masës Disiplinore" style="float:right"/>
+                            <p:datePicker id="dtM" value="#{caseJSFManagedBean.c.measureDate}" locale="al" required="true" requiredMessage="Zgjidhni Afatin" yearNavigator="true" pattern="dd-MM-yyyy"/>
+
+                            <p:outputLabel for="gj" value="Gjendja e Çështjes" style="float:right"/>
+                            <p:selectOneMenu id="gj" value="#{caseJSFManagedBean.c.status}" style="width:125px" required="true">
+                                <f:selectItem itemLabel="Zgjidh" itemValue="" />
+                                <f:selectItem itemLabel="Përfunduar" itemValue="0" />
+                                <f:selectItem itemLabel="Në Proces" itemValue="1" />
+                                <f:selectItem itemLabel="Pezulluar" itemValue="2" />
+                            </p:selectOneMenu>
+
+                            <p:outputLabel for="pez" value="Pezulluar" style="float:right"/>
+                            <p:selectOneMenu id="pez" value="#{caseJSFManagedBean.c.interupt}" style="width:125px">
+                                <f:selectItem itemLabel="Zgjidh" itemValue="" />
+                                <f:selectItem itemLabel="Me Pagesë" itemValue="0" />
+                                <f:selectItem itemLabel="Pa Pagesë" itemValue="1" />
+                            </p:selectOneMenu>
+
+                            <p:outputLabel for="@next" value="Institucioni që ka filluar hetimin" style="float:right"/>
+                            <p:selectOneMenu id="str" value="#{caseJSFManagedBean.incomeStructure}" converter="#{structureConverter}" 
+                                             required="true" requiredMessage="Zgjidhni strukturën" var="i">
+                                <p:ajax event="change" process="@this" />
+                                <f:selectItem itemLabel="Zgjidh" itemValue="#{null}" noSelectionOption="true" />
+                                <f:selectItems value="#{caseJSFManagedBean.structures}" var="s" itemLabel="#{s.structure}" itemValue="#{s}"/>
+                                <p:column>
+                                    <h:outputText value="#{i.structure}" />
+                                </p:column>
+                            </p:selectOneMenu>
+
+                            <p:outputLabel for="@next" value="Specialisti që kryen hetimin" style="float:right"/>
+                            <p:selectOneMenu id="pros" value="#{caseJSFManagedBean.c.prosecutorId}" converter="#{prosecutorConverter}" 
+                                             required="true" requiredMessage="Zgjidhni strukturën" var="i">
+                                <p:ajax event="change" process="@this" />
+                                <f:selectItem itemLabel="Zgjidh" itemValue="#{null}" noSelectionOption="true" />
+                                <f:selectItems value="#{caseJSFManagedBean.prosecutors}" var="p" itemLabel="#{p.name}" itemValue="#{p}"/>
+                                <p:column>
+                                    <f:facet name="header">
+                                        <h:outputText value="Grada"/>
+                                    </f:facet>
+                                    <h:outputText value="#{i.rank}" />
+                                </p:column>
+                                <p:column>
+                                    <f:facet name="header">
+                                        <h:outputText value="Emri"/>
+                                    </f:facet>
+                                    <h:outputText value="#{i.name}" />
+                                </p:column>
+                                <p:column>
+                                    <f:facet name="header">
+                                        <h:outputText value="Mbiemri"/>
+                                    </f:facet>
+                                    <h:outputText value="#{i.surname}" />
+                                </p:column>
+
+                            </p:selectOneMenu>
+
+                        </p:panelGrid>
+
+                        <p:panelGrid columns="2" columnClasses="ui-g-12 ui-md-4,ui-g-12 ui-md-8" layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+
+                            <p:outputLabel value="Punonjësi" style="float:right"/>
+                            <p:commandButton value="Kërko RMIS" icon="pi pi-search" oncomplete="PF('officerDialog').show()" process="@this"/>
+
+                            <p:outputLabel for="rid" value="Oficer Id" style="float:right"/>
+                            <p:inputText id="rid" value="#{caseJSFManagedBean.officer.rmisId}" required="true"/>
+
+                            <p:outputLabel for="grada" value="Grada" style="float:right"/>
+                            <p:inputText id="grada" value="#{caseJSFManagedBean.officer.rank}" required="true"/>
+
+                            <p:outputLabel for="emri" value="Emri" style="float:right"/>
+                            <p:inputText id="emri" value="#{caseJSFManagedBean.officer.name}" required="true"/>
+
+                            <p:outputLabel for="mbiemri" value="Mbiemri" style="float:right"/>
+                            <p:inputText id="mbiemri" value="#{caseJSFManagedBean.officer.surname}" required="true"/>
+
+                            <p:outputLabel for="funksioni" value="Funksioni" style="float:right"/>
+                            <p:inputText id="funksioni" value="#{caseJSFManagedBean.officer.function}" required="true"/>
+
+                            <p:outputLabel for="dfk" value="Data e Fillimit të Komisionit" style="float:right"/>
+                            <p:datePicker id="dfk" value="#{caseJSFManagedBean.c.commisionInitialDate}" locale="al" yearNavigator="true" pattern="dd-MM-yyyy"/>
+
+                            <p:outputLabel for="dk" value="Data e Komisionit" style="float:right"/>
+                            <p:datePicker id="dk" value="#{caseJSFManagedBean.c.commisionDate}" locale="al" yearNavigator="true" pattern="dd-MM-yyyy"/>
+
+                            <p:outputLabel for="ndry" value="Ndryshuar nga Komisioni" style="float:right"/>
+                            <p:selectOneMenu id="ndry" value="#{caseJSFManagedBean.c.interupt}" style="width:125px">
+                                <f:selectItem itemLabel="Zgjidh" itemValue="" />
+                                <f:selectItem itemLabel="Po" itemValue="0" />
+                                <f:selectItem itemLabel="Jo" itemValue="1" />
+                            </p:selectOneMenu>
+
+                            <p:outputLabel for="fuqi" value="Lënë në fuqi" style="float:right"/>
+                            <p:selectOneMenu id="fuqi" value="#{caseJSFManagedBean.c.leftInforce}" style="width:125px">
+                                <f:selectItem itemLabel="Zgjidh" itemValue="" />
+                                <f:selectItem itemLabel="Po" itemValue="0" />
+                                <f:selectItem itemLabel="Jo" itemValue="1" />
+                            </p:selectOneMenu>
+
+                            <p:outputLabel for="dperf" value="Data përfundimtare e Komisionit" style="float:right"/>
+                            <p:datePicker id="dperf" value="#{caseJSFManagedBean.c.commisionFinalDate}" locale="al" yearNavigator="true" pattern="dd-MM-yyyy"/>
+
+                            <p:outputLabel for="vkom" value="Vendimi i Komisionit" style="float:right"/>
+                            <p:inputTextarea id="vkom" value="#{caseJSFManagedBean.c.commisionDecision}" counter="dis" maxlength="500" 
+                                             counterTemplate="{0} karaktere të mbetur."/>
+                            <br />
+                            <h:outputText id="dis" />
+                        </p:panelGrid>
+
+                    </p:panelGrid>
+
+                    <p:panelGrid columns="2" columnClasses="ui-g-12 ui-md-6,ui-g-12 ui-md-6" layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+                        <p:commandButton value="Pastro" icon="pi pi-undo" actionListener="#{caseJSFManagedBean.load()}" update="caseForm" process="@this"/>
+                        <p:commandButton value="Krijo Çështje" icon="pi pi-save" actionListener="#{caseJSFManagedBean.createCase()}" rendered="#{caseJSFManagedBean.c.id == 0}" update="caseForm"/>   
+                        <p:commandButton value="Modifiko Çështje" icon="pi pi-edit" actionListener="#{caseJSFManagedBean.updateCase()}" rendered="#{caseJSFManagedBean.c.id != 0}" update="caseForm"/>   
+                    </p:panelGrid>
+
+                </p:panel>
+
+                <p:dataTable var="case" value="#{caseJSFManagedBean.cases}" rowIndexVar="r" rowKey="#{case.id}"
+                             rows="15" paginator="true" id="caseTable" widgetVar="caseTable"
+                             style="font-size:12px;" selectionMode="single" selection="#{caseJSFManagedBean.selectedCase}">
+
+                    <p:ajax event="rowSelect" listener="#{caseJSFManagedBean.onCaseSelect()}" update="@form"/>
+
+                    <p:column headerText="Nr" style="font-size: 12px; width:20px">
+                        #{r+1}
+                    </p:column>
+
+                    <p:column headerText="Numri i çështjes" sortBy="#{case.caseNumber}" filterBy="#{case.caseNumber}" filterMatchMode="contains" style="width: 110px;font-size:12px;">
+                        <h:outputText value="#{case.caseNumber}" />
+                    </p:column>
+
+                    <p:column headerText="Data" style="width: 70px;font-size:12px;">
+                        <h:outputText value="#{caseJSFManagedBean.formatDate(case.dateCreated)}" />
+                    </p:column>
+
+                    <p:column headerText="Përshkrimi" filterBy="#{case.description}" filterMatchMode="contains" style="font-size:12px;">
+                        <h:outputText value="#{case.description}" />
+                    </p:column>
+
+                    <p:column headerText="Neni" style="font-size:12px;">
+                        <h:outputText value="#{case.article}" />
+                    </p:column>
+
+                    <p:column headerText="Statusi" filterBy="#{case.status}" filterMatchMode="contains" style="width: 90px;font-size:12px;">
+                        <f:facet name="filter">
+                            <p:selectOneMenu onchange="PF('caseTable').filter()" styleClass="custom-filter">
+
+                                <f:selectItem itemLabel="Zgjidh" itemValue="#{null}" noSelectionOption="true" />
+                                <f:selectItem itemLabel="Përfunduar" itemValue="0"/>
+                                <f:selectItem itemLabel="Në proces" itemValue="1" />
+                            </p:selectOneMenu>
+                        </f:facet>
+                        <h:outputText value="#{case.status eq '1' ? 'Në Proces' : case.status eq '0' ? 'Përfunduar': null}" />
+                    </p:column>
+
+                    <p:column headerText="Masa Disiplinore" style="font-size:12px;">
+                        <h:outputText value="#{case.measure}" />
+                    </p:column>
+
+                    <p:column headerText="Punonjësin" style="width: 200px;font-size:12px;">
+                        <h:outputText value="#{caseJSFManagedBean.formatOfficer(case.officerId.id)}" />
+                    </p:column>
+
+                    <p:column headerText="Specialisti për hetimin" style="width: 200px;font-size:12px;">
+                        <h:outputText value="#{caseJSFManagedBean.formatProsecutor(case.prosecutorId.id)}" />
+                    </p:column>
+                </p:dataTable>
+            </div>                      
+        </h:form>
+
+        <h:form id="dialogForm" rendered="#{accessBean.hasAccess(0)}">
+
+            <p:dialog header="Kërko punonjës në sistemin RMIS" widgetVar="officerDialog" showEffect="fade" hideEffect="fade" 
+                      resizable="false" id="officerDialog" width="800px">
+                <p:messages id="messages" showDetail="true" closable="true">
+                    <p:autoUpdate />
+                </p:messages>
+                <p:outputPanel id="officerModelPanel">
+                    <p:panelGrid columns="6" columnClasses="ui-g-12 ui-md-2,ui-g-12 ui-md-2,ui-g-12 ui-md-2,ui-g-12 ui-md-2, ui-g-12 ui-md-2, ui-g-12 ui-md-2" layout="grid" 
+                                 styleClass="ui-panelgrid-blank ui-fluid">
+                        <p:outputLabel value="Emri" style="float:right"/>
+                        <p:inputText value="#{caseJSFManagedBean.officerName}" required="true"/>
+                        <p:outputLabel value="Mbiemri" style="float:right"/>
+                        <p:inputText value="#{caseJSFManagedBean.officerSurname}" required="true"/>
+                        <p:commandButton value="Kërko" icon="pi pi-search" actionListener="#{caseJSFManagedBean.searchRmis()}" update="messages,officerModelTbl"/>
+                        <p:commandButton value="Pastro" icon="pi pi-undo" actionListener="#{caseJSFManagedBean.clearOfModelForm()}" update="messages,officerModelPanel"/>
+                    </p:panelGrid>
+
+                    <p:dataTable var="o" value="#{caseJSFManagedBean.oficersModel}" rowKey="#{o.id}"
+                                 rows="15" paginator="true" id="officerModelTbl" 
+                                 selection="#{caseJSFManagedBean.selectedOfficer}" selectionMode="single"
+                                 style="font-size:12px;">
+
+                        <p:ajax event="rowSelect" listener="#{caseJSFManagedBean.onRowSelect()}" update="caseForm:rid caseForm:emri caseForm:mbiemri caseForm:grada caseForm:funksioni" />
+
+                        <p:column headerText="Numri i RMIS" style="font-size:12px;">
+                            <h:outputText value="#{o.idRmis}" />
+                        </p:column>
+                        <p:column headerText="Grada" style="font-size:12px;">
+                            <h:outputText value="#{o.grade}" />
+                        </p:column>
+                        <p:column headerText="Emri" style="font-size:12px;">
+                            <h:outputText value="#{o.name}" />
+                        </p:column>
+                        <p:column headerText="Atësia" style="font-size:12px;">
+                            <h:outputText value="#{o.fathername}" />
+                        </p:column>
+                        <p:column headerText="Mbiemri" style="font-size:12px;">
+                            <h:outputText value="#{o.surname}" />
+                        </p:column>
+                        <p:column headerText="Funksioni" style="font-size:12px;">
+                            <h:outputText value="#{o.officerFunction}" />
+                        </p:column>
+                    </p:dataTable>
+
+                </p:outputPanel>
+            </p:dialog>
+        </h:form>
+
+        <h:form rendered="#{!accessBean.hasAccess(0)}">
+            <h1>Access Denied!</h1>
+        </h:form>
+    </ui:define>
+
+</ui:composition>
