@@ -20,9 +20,9 @@ public class LoginLdap {
         // Setup environment for authenticating
         Hashtable<String, String> environment = new Hashtable<String, String>();
         environment.put(Context.INITIAL_CONTEXT_FACTORY, "com.sun.jndi.ldap.LdapCtxFactory");
-        environment.put(Context.PROVIDER_URL, "ldap://192.168.150.10:389");
+        environment.put(Context.PROVIDER_URL, "ldap://192.168.1.2:389");
         environment.put(Context.SECURITY_AUTHENTICATION, "simple");
-        environment.put(Context.SECURITY_PRINCIPAL, username + "@asp.gov.al");
+        environment.put(Context.SECURITY_PRINCIPAL, username + "@gov.al");
         environment.put(Context.SECURITY_CREDENTIALS, password);
 
         try {
